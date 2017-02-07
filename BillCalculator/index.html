@@ -1,0 +1,179 @@
+<html ng-app="restaurantBill">
+
+    <head>
+
+        <!-- from Google Hosted Libraries -->
+        <title>Bill Calculator</title>
+        <script src="angular.min.js"></script>
+
+        <script lang="javascript">
+
+        
+
+            var myModule = angular.module('BillCalculator', []);
+
+            
+            myModule.controller('CostController', 
+
+                function ($scope) {
+
+                    
+
+                    var cc = this;
+                    
+                    cc.cost = 0;
+
+                    cc.add_tax = 0;
+
+                    cc.total_bill = 0;
+
+                    
+
+                    function update(){
+                        
+                        cc.cost = cc.enteredCost;
+                        
+                        cc.add_tax =  parseFloat(cc.cost) * cc.selected_state_tax;   
+
+                        cc.total = parseFloat(cc.cost) + cc.tax;
+
+                    }
+
+                    
+
+                    //used to detect when cost changes
+
+                    $scope.$watch('cc.cost', update);
+
+                    $scope.$watch('cc.add_tax', update);
+
+                    $scope.$watch('cc.total', update);
+
+                    
+
+                    //final bill
+
+                    cc.final_bill = 0.0;
+                    
+                    cc.tax = function tax(){
+                        cc.total * cc.selected_state_tax;
+                    };
+                    
+                    cc.add = function add(){
+
+                        cc.final_bill += cc.total;   
+
+                    };
+                    
+                    cc.state_options=[
+                        
+                        {name:"Alaska", amount:4.0 },
+                        {name:"Alabama", amount:0.0 },
+                        {name:"Arizona", amount:5.6 },
+                        {name:"Arkansas", amount:6.5 },
+                        {name:"California", amount:7.5 },
+                        {name:"Colorado", amount:2.9 },
+                        {name:"Connecticut", amount:6.35 },
+                        {name:"Delaware", amount:0.0 },
+                        {name:"District of Columbia", amount:5.75 },
+                        {name:"Florida", amount:6.0 },
+                        {name:"Georgia", amount:4.0 },
+                        {name:"Hawaii", amount:4.0 },
+                        {name:"Idaho", amount:6.0 },
+                        {name:"Illiois", amount:6.25 },
+                        {name:"Indiana", amount:7.0 },
+                        {name:"Iowa", amount:6.0 },
+                        {name:"Kansas", amount:6.5 },
+                        {name:"Kentucky", amount:6.0 },
+                        {name:"Louisiana", amount:4.0 },
+                        {name:"Maine", amount:5.5 },
+                        {name:"Maryland", amount:6.0 },
+                        {name:"Massachusetts", amount:6.25 },
+                        {name:"Michigan", amount:6.0 },
+                        {name:"Minnesota", amount:6.88 },
+                        {name:"Mississippi", amount:7.0 },
+                        {name:"Missouri", amount:4.23 },
+                        {name:"Montana", amount:0.0 },
+                        {name:"Nebraska", amount:5.5 },
+                        {name:"Nevada", amount:6.85 },
+                        {name:"New Hampshire", amount:0.0 },
+                        {name:"New Jersey", amount:7.0 },
+                        {name:"New Mexico", amount:5.13 },
+                        {name:"New York", amount:4.0 },
+                        {name:"North Carolina", amount:4.75 },
+                        {name:"North Dakota", amount:5.0 },
+                        {name:"Ohio", amount:5.75 },
+                        {name:"Oklahoma", amount:4.5 },
+                        {name:"Oregon", amount:0.0 },
+                        {name:"Pennsylvania", amount:6.0 },
+                        {name:"Puerto Rico", amount:6.0 },
+                        {name:"Rhode Island", amount:7.0 },
+                        {name:"South Carolina", amount:6.0 },
+                        {name:"South Dakota", amount:4.0 },
+                        {name:"Tennessee", amount:7.0 },
+                        {name:"Texas", amount:6.25 },
+                        {name:"Utah", amount:5.95 },
+                        {name:"Vermont", amount:6.0 },
+                        {name:"Virginia", amount:5.3 },
+                        {name:"Washington", amount:6.5 },
+                        {name:"West Virginia", amount:6.0 },
+                        {name:"Wisconsin", amount:5.0 },
+                        {name:"Wyoming", amount:4.0}
+                    
+                    ];
+
+                    cc.selected_state = cc.state_options.name[0];
+                    cc.selected_state_tax = cc.state_options.amount[0];
+                }
+                
+
+            );
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <div ng-controller="CostController as cc">
+            <p>
+
+                Bill total: <input type="text" ng-model="cc.enteredCost" placeholder="cost" /><br/>
+
+            </p>
+            
+            <p>
+
+            Your bill total as entered: <span class ="cc.cost"></span>
+        
+            </p>
+
+            <p>
+            State: <select ng-model="cc.selected_state" ng-options="s.name for s in cc.state_options" ></select>
+            </p>
+            <p>
+
+                This is your tax: 
+
+            </p>
+            
+            <select>
+                <option ng-model="cc.tax" value="10%">10% Tip</option>
+                <option ng-model="cc.tax" value="15%">15% Tip</option>
+                <option ng-model="cc.tax" value="20%">20% Tip</option>
+            </select>
+
+            
+
+            
+
+            <p ng-show="cc.total_bill">
+
+                This is your total: 
+
+            </p>
+
+
+    </body>
+
+</html>
